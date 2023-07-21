@@ -1,8 +1,9 @@
 import express from "express";
-import * as dotenv from "dotenv";
+import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 import upload from "express-fileupload";
+import cookieParser from "cookie-parser";
 import ChatRoutes from "./routes/chatRoutes.js";
 import ProfileRoutes from "./routes/profileRoutes.js";
 
@@ -10,9 +11,15 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: process.env.CLIENT_URL,
+  }),
+);
 app.use(upload());
 app.use(express.json());
+app.use(cookieParser());
 
 // routes
 app.use("/api/chat", ChatRoutes);
