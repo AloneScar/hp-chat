@@ -3,7 +3,7 @@ import Pages from "./Pages";
 import { UserContextProvider } from "./UserContext";
 
 function App() {
-  axios.defaults.baseURL = "https://hp-chat-api.zeabur.app/";
+  axios.defaults.baseURL = "https://hp-chat-api.zeabur.app/api";
   axios.defaults.withCredentials = true;
   return (
     <UserContextProvider>
