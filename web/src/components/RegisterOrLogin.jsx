@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { UserContext } from "./UserContext";
+import { UserContext } from "../UserContext";
 import { useContext } from "react";
 
 export default function RegisterOrLogin() {
@@ -9,7 +9,7 @@ export default function RegisterOrLogin() {
   const [isLogin, setIsLogin] = useState(false);
   const { setUsername: setLoginedUsername, setId } = useContext(UserContext);
   function handle_submit() {
-    const url = isLogin ? "/profile/login" : "/profile/register";
+    const url = isLogin ? "/auth/login" : "/auth/register";
     axios
       .post(url, {
         username,
@@ -32,27 +32,28 @@ export default function RegisterOrLogin() {
             <input
               type="text"
               placeholder="username"
-              className="input input-bordered input-secondary w-full hover:outline-none focus:outline-none"
+              className="w-full hover:outline-none focus:outline-none"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
             <input
               type="password"
               placeholder="password"
-              className="input input-bordered input-info w-full hover:outline-none focus:outline-none"
+              className="w-full hover:outline-none focus:outline-none"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button
-              className="btn btn-outline btn-primary w-full"
-              onClick={() => handle_submit()}
-            >
+            <button className="w-full" onClick={() => handle_submit()}>
               REGISTER
             </button>
             <div className="w-full text-center">
               Already a member?{" "}
               <button
-                onClick={() => setIsLogin(!isLogin)}
+                onClick={() => {
+                  setUsername("");
+                  setPassword("");
+                  setIsLogin(!isLogin);
+                }}
                 className="underline"
               >
                 Login
@@ -66,23 +67,28 @@ export default function RegisterOrLogin() {
             <input
               type="text"
               placeholder="username"
-              className="input input-bordered input-secondary w-full hover:outline-none focus:outline-none"
+              className="w-full hover:outline-none focus:outline-none"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <input
               type="password"
               placeholder="password"
-              className="input input-bordered input-info w-full hover:outline-none focus:outline-none"
+              className="w-full hover:outline-none focus:outline-none"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
-            <button
-              className="btn btn-outline btn-primary w-full"
-              onClick={() => handle_submit()}
-            >
+            <button className="w-full" onClick={() => handle_submit()}>
               LOGIN
             </button>
             <div className="w-full text-center">
               Don`t have an account?{" "}
               <button
-                onClick={() => setIsLogin(!isLogin)}
+                onClick={() => {
+                  setUsername("");
+                  setPassword("");
+                  setIsLogin(!isLogin);
+                }}
                 className="underline"
               >
                 Register

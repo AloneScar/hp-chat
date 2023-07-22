@@ -1,4 +1,3 @@
-import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -8,7 +7,6 @@ import UserModel from "../models/User.js";
 dotenv.config();
 
 const bcryptSalt = bcrypt.genSaltSync(10);
-const router = express.Router();
 const jwtSecret = process.env.JWT_SECRET;
 
 const verify_user_data = (username, password) => {
@@ -29,7 +27,7 @@ const verify_user_data = (username, password) => {
   return [false, ""];
 };
 
-const Authenticate = (req, res) => {
+export const Authenticate = (req, res) => {
   const token = req.cookies?.token;
   if (token) {
     jwt.verify(token, jwtSecret, {}, (err, userData) => {
@@ -43,7 +41,7 @@ const Authenticate = (req, res) => {
   }
 };
 
-const Register = async (req, res) => {
+export const Register = async (req, res) => {
   let { username, password } = req.body;
   let [err, ret] = verify_user_data(username, password);
   if (err) {
@@ -69,7 +67,7 @@ const Register = async (req, res) => {
   }
 };
 
-const Login = async (req, res) => {
+export const Login = async (req, res) => {
   const { username, password } = req.body;
   let [err, ret] = verify_user_data(username, password);
   if (err) {
@@ -92,10 +90,10 @@ const Login = async (req, res) => {
           },
         );
       } else {
-        res.send("password error");
+        res.status(500).send("password error");
       }
     } else {
-      res.send("not found the user");
+      res.status(500).send("not found the user");
     }
   } catch (err) {
     console.log(err);
@@ -103,8 +101,9 @@ const Login = async (req, res) => {
   }
 };
 
-router.route("/").get(Authenticate);
-router.route("/register").post(Register);
-router.route("/login").post(Login);
-
-export default router;
+export const Logout = (_, res) => {
+  res
+    .cookie("token", "", { sameSite: "none", secure: true })
+    .status(200)
+    .send("logout well");
+};

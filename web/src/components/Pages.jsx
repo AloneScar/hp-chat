@@ -1,7 +1,7 @@
 import RegisterOrLogin from "./RegisterOrLogin";
 import Chat from "./Chat";
 import { useContext } from "react";
-import { UserContext } from "./UserContext";
+import { UserContext } from "../UserContext";
 
 export default function Pages() {
   const { username } = useContext(UserContext);
