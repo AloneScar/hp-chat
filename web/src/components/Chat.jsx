@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { format } from "date-fns";
 import Message from "./Message";
-import { socket } from "../socket";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { UserContext } from "../UserContext";
+import { useRef } from "react";
 
 export default function Chat() {
-  const { username } = useContext(UserContext);
-  const [currentRoom, setCurrentRoom] = useState("public");
+  const { username, socket } = useContext(UserContext);
+  const [currentRoom, _] = useState("public");
   const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const divUnderMessages = useRef();
   const send_message = () => {
     if (inputMessage.trim() !== "") {
       const msg = {
@@ -35,6 +36,12 @@ export default function Chat() {
       });
     });
   }, [socket]);
+  useEffect(() => {
+    const div = divUnderMessages.current;
+    if (div) {
+      div.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  }, [messages]);
   return (
     <>
       <div className="flex flex-row h-full justify-between">
@@ -44,13 +51,14 @@ export default function Chat() {
           </div>
         </div>
         <div className="h-full w-3/4 bg-blue-200 flex flex-col">
-          <div className="bg-teal-400 h-3/4 w-full overflow-y-auto gap-2 no-scrollbar">
+          <div className="bg-teal-400 w-full overflow-y-auto gap-2 no-scrollbar flex-grow">
             {messages.map((message, index) => {
               return <Message key={index} message={message} />;
             })}
+            <div ref={divUnderMessages}></div>
           </div>
-          <div className="h-1/4 flex flex-row justify-between">
-            <textarea
+          <div className="flex justify-between">
+            <input
               className="flex bg-transparent resize-none border-none h-full hover:outline-none p-2 focus:outline-none flex-grow no-scrollbar"
               placeholder="Say something ..."
               value={inputMessage}
@@ -60,7 +68,7 @@ export default function Chat() {
                   send_message();
                 }
               }}
-            ></textarea>
+            ></input>
             <button className="h-full bg-white" onClick={() => send_message()}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

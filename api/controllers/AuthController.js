@@ -30,11 +30,23 @@ const verify_user_data = (username, password) => {
 export const Authenticate = (req, res) => {
   const token = req.cookies?.token;
   if (token) {
-    jwt.verify(token, jwtSecret, {}, (err, userData) => {
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) {
         return res.status(500).send("server error");
       }
-      res.status(200).json(userData);
+      try {
+        const UserDoc = await UserModel.findOne({
+          username: userData.username,
+        });
+        if (UserDoc) {
+          res.status(200).json(userData);
+        } else {
+          res.status(500).send("token lapsed");
+        }
+      } catch (err) {
+        console.log(err);
+        res.status(500).send("server error");
+      }
     });
   } else {
     res.status(401).send("no token");

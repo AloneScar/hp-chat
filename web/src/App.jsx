@@ -3,8 +3,7 @@ import Pages from "./components/Pages";
 import { UserContextProvider } from "./UserContext";
 
 function App() {
-  // axios.defaults.baseURL = "https://hp-chat-api.zeabur.app/api";
-  axios.defaults.baseURL = "http://localhost:5555/api";
+  axios.defaults.baseURL = import.meta.env.VITE_AXIOS_BASEURL;
   axios.defaults.withCredentials = true;
   return (
     <UserContextProvider>

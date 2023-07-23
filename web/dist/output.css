@@ -534,20 +534,16 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
+.block {
+  display: block;
+}
+
 .flex {
   display: flex;
 }
 
 .contents {
   display: contents;
-}
-
-.h-1\/4 {
-  height: 25%;
-}
-
-.h-3\/4 {
-  height: 75%;
 }
 
 .h-6 {
@@ -592,10 +588,6 @@ video {
 
 .flex-col {
   flex-direction: column;
-}
-
-.justify-end {
-  justify-content: flex-end;
 }
 
 .justify-center {

@@ -2,12 +2,17 @@ import axios from "axios";
 import { useState } from "react";
 import { UserContext } from "../UserContext";
 import { useContext } from "react";
+import { io } from "socket.io-client";
 
 export default function RegisterOrLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(false);
-  const { setUsername: setLoginedUsername, setId } = useContext(UserContext);
+  const {
+    setUsername: setLoginedUsername,
+    setId,
+    setSocket,
+  } = useContext(UserContext);
   function handle_submit() {
     const url = isLogin ? "/auth/login" : "/auth/register";
     axios
@@ -20,6 +25,7 @@ export default function RegisterOrLogin() {
           setIsLogin(true);
         } else if (resp.status === 200) {
           setLoginedUsername(username);
+          setSocket(io(import.meta.env.VITE_SOCKETIO_URL));
           setId(resp.data.id);
         }
       });
