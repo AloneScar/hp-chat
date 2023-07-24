@@ -40,7 +40,8 @@ export default function Chat() {
       ];
     });
   };
-  const send_message = () => {
+  const send_message = (e) => {
+    e.preventDefault();
     if (inputMessage.trim() !== "") {
       const msg = {
         contents: inputMessage,
@@ -88,9 +89,9 @@ export default function Chat() {
               {isDark && <MoonIcon className="w-6 h-6" />}
             </button>
           </div>
-          <div className="flex flex-row gap-2">
-            <button className="flex flex-row">
-              {username}
+          <div className="">
+            <button className="flex justify-center items-center">
+              <span>{username}</span>
               <UserCircleIcon className="w-6 h-6 ml-1" />
             </button>
           </div>
@@ -111,14 +112,15 @@ export default function Chat() {
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyDown={(e) => {
+              e.preventDefault();
               if (e.key === "Enter") {
                 send_message();
               }
             }}
           ></input>
           <button
-            className="h-full bg-[#4E9F3D] dark:bg-[#3C415C] text-white"
-            onClick={() => send_message()}
+            className="h-full bg-[#4E9F3D] dark:bg-[#3C415C] text-white px-2 text-center"
+            onClick={(e) => send_message(e)}
           >
             <PaperAirplaneIcon className="w-6 h-6" />
           </button>
