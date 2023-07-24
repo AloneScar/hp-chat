@@ -32,7 +32,7 @@ export default function RegisterOrLogin() {
       });
   }
   return (
-    <div className="flex justify-center h-full bg-[#27374D]">
+    <div className="flex justify-center h-full bg-[#F6F4EB] dark:bg-[#27374D]">
       <div className="flex flex-col justify-center">
         <AuthForm
           username={username}

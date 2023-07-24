@@ -8,8 +8,15 @@ export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
   const [username, setUsername] = useState("");
-  const [id, setId] = useState("");
+  const [isDark, setIsDark] = useState(() => {
+    const isDarkLocal = localStorage.getItem("isDark");
+    if (isDarkLocal === null || isDarkLocal === "false") {
+      return false;
+    }
+    return true;
+  });
   const [socket, setSocket] = useState(null);
+  const [id, setId] = useState("");
   useEffect(() => {
     axios.get("/auth").then((resp) => {
       if (resp.status === 200) {
@@ -22,7 +29,16 @@ export function UserContextProvider({ children }) {
 
   return (
     <UserContext.Provider
-      value={{ username, setUsername, id, setId, socket, setSocket }}
+      value={{
+        username,
+        setUsername,
+        id,
+        setId,
+        socket,
+        setSocket,
+        isDark,
+        setIsDark,
+      }}
     >
       {children}
     </UserContext.Provider>

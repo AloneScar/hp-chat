@@ -15,11 +15,10 @@ import {
 } from "@heroicons/react/24/outline";
 
 export default function Chat() {
-  const { username, socket } = useContext(UserContext);
+  const { isDark, setIsDark, username, socket } = useContext(UserContext);
   const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const divUnderMessages = useRef();
-  const [isDark, setIsDark] = useState(false);
   const update_local_messages = (msg) => {
     setMessages((oldMsgs) => {
       if (oldMsgs.length !== 0) {
@@ -72,20 +71,19 @@ export default function Chat() {
     });
   }, []);
   return (
-    <div className={`${isDark ? "dark " : ""}w-full h-full`}>
-      <div
-        hidden
-        className="absolute right-0 left-0 bottom-0 top-0 m-auto w-1/2 h-1/2 bg-white p-20"
-      >
-        ffdsfsad
-      </div>
+    <div className="w-full h-full">
       <div className="w-full h-full flex flex-col bg-[#BA704F] dark:bg-[#27374D]">
         <div className="flex flex-row my-1 mx-2 bg-[#4C4B16] dark:bg-[#9DB2BF] p-1 justify-between items-center">
           <div className="flex flex-row gap-2">
             <button>
               <UsersIcon className="w-6 h-6" />
             </button>
-            <button onClick={() => setIsDark(!isDark)}>
+            <button
+              onClick={() => {
+                localStorage.setItem("isDark", !isDark);
+                setIsDark(!isDark);
+              }}
+            >
               {!isDark && <SunIcon className="w-6 h-6" />}
               {isDark && <MoonIcon className="w-6 h-6" />}
             </button>
