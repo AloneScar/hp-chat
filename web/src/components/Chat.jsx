@@ -7,6 +7,7 @@ import { UserContext } from "../UserContext";
 import { useRef } from "react";
 import axios from "axios";
 import {
+  PaperAirplaneIcon,
   UsersIcon,
   SunIcon,
   MoonIcon,
@@ -71,61 +72,59 @@ export default function Chat() {
     });
   }, []);
   return (
-    <div className="w-full h-full flex flex-col bg-[#BA704F]">
-      <div className="flex flex-row my-1 mx-2 bg-[#4C4B16] p-1 justify-between items-center">
-        <div className="flex flex-row gap-2">
-          <button>
-            <UsersIcon className="w-6 h-6" />
-          </button>
-          <button onClick={() => setIsDark(!isDark)}>
-            {!isDark && <SunIcon className="w-6 h-6" />}
-            {isDark && <MoonIcon className="w-6 h-6" />}
-          </button>
-        </div>
-        <div className="flex flex-row gap-2">
-          <button className="flex flex-row">
-            {username}
-            <UserCircleIcon className="w-6 h-6 ml-1" />
-          </button>
-        </div>
+    <div className={`${isDark ? "dark " : ""}w-full h-full`}>
+      <div
+        hidden
+        className="absolute right-0 left-0 bottom-0 top-0 m-auto w-1/2 h-1/2 bg-white p-20"
+      >
+        ffdsfsad
       </div>
-      <div className="rounded my-1 mx-2 overflow-y-auto gap-2 no-scrollbar flex-grow flex flex-col bg-[#FFD89C]">
-        {messages.map((message, index) => {
-          return <Message key={index} message={message} />;
-        })}
-        <div
-          className="bg-transparent w-full py-0.5"
-          ref={divUnderMessages}
-        ></div>
-      </div>
-      <div className="flex my-1 mx-2 bg-[#85A389] justify-between rounded-l-lg">
-        <input
-          className="flex bg-transparent resize-none border-none h-full hover:outline-none p-2 focus:outline-none flex-grow no-scrollbar placeholder-[#61764B]"
-          placeholder="Say something ..."
-          value={inputMessage}
-          onChange={(e) => setInputMessage(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              send_message();
-            }
-          }}
-        ></input>
-        <button className="h-full bg-white" onClick={() => send_message()}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
+      <div className="w-full h-full flex flex-col bg-[#BA704F] dark:bg-[#27374D]">
+        <div className="flex flex-row my-1 mx-2 bg-[#4C4B16] dark:bg-[#9DB2BF] p-1 justify-between items-center">
+          <div className="flex flex-row gap-2">
+            <button>
+              <UsersIcon className="w-6 h-6" />
+            </button>
+            <button onClick={() => setIsDark(!isDark)}>
+              {!isDark && <SunIcon className="w-6 h-6" />}
+              {isDark && <MoonIcon className="w-6 h-6" />}
+            </button>
+          </div>
+          <div className="flex flex-row gap-2">
+            <button className="flex flex-row">
+              {username}
+              <UserCircleIcon className="w-6 h-6 ml-1" />
+            </button>
+          </div>
+        </div>
+        <div className="rounded my-1 mx-2 overflow-y-auto gap-0 scroll-smooth no-scrollbar flex-grow flex flex-col bg-[#FFD89C] dark:bg-[#526D82]">
+          {messages.map((message, index) => {
+            return <Message key={index} message={message} />;
+          })}
+          <div
+            className="bg-transparent w-full py-0.5"
+            ref={divUnderMessages}
+          ></div>
+        </div>
+        <div className="flex my-1 mx-2 bg-[#85A389] dark:bg-[#0E8388] justify-between rounded-l-lg">
+          <input
+            className="flex bg-transparent resize-none border-none h-full hover:outline-none p-2 focus:outline-none flex-grow no-scrollbar placeholder-[#61764B] dark:placeholder-[#03001C]"
+            placeholder="Say something ..."
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                send_message();
+              }
+            }}
+          ></input>
+          <button
+            className="h-full bg-[#4E9F3D] dark:bg-[#3C415C] text-white"
+            onClick={() => send_message()}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-            />
-          </svg>
-        </button>
+            <PaperAirplaneIcon className="w-6 h-6" />
+          </button>
+        </div>
       </div>
     </div>
   );
