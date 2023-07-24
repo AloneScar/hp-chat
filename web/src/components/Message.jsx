@@ -1,17 +1,19 @@
-import { useContext } from "react";
-import { UserContext } from "../UserContext";
-
 export default function Message({ message }) {
-  const { username } = useContext(UserContext);
   const { sender, send_time, contents } = message;
-  const position = username == sender ? "end" : "start";
   return (
-    <div className={`p-1 w-full flex justify-${position}`}>
+    <div className="p-2">
+      <div className="text-black">
+        <span className="text-lg">{sender}</span>{" "}
+        <span className="text-sm">{send_time.split(" ")[1]}</span>
+      </div>
       <div>
-        <div className="text-black">
-          {sender} <span>{send_time}</span>
-        </div>
-        <div className={`text-red-400 text-${position}`}>{contents}</div>
+        {contents.map((content, index) => {
+          return (
+            <div key={index} className="text-red-400">
+              {content}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

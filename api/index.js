@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import * as dotenv from "dotenv";
-// import ChatRoutes from "./routes/ChatRoutes.js";
+import ChatRoutes from "./routes/ChatRoutes.js";
 import AuthRoutes from "./routes/AuthRoutes.js";
 import handleSocketIo from "./HandleSocketIo.js";
 
@@ -33,7 +33,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // routes
-// app.use("/api/chat", ChatRoutes);
+app.use("/api/chat", ChatRoutes);
 app.use("/api/auth", AuthRoutes);
 
 // connect to mongodb

@@ -57,7 +57,7 @@ export const Register = async (req, res) => {
   let { username, password } = req.body;
   let [err, ret] = verify_user_data(username, password);
   if (err) {
-    return res.send(ret);
+    return res.status(500).send(ret);
   }
   try {
     const hashedPassword = bcrypt.hashSync(password, bcryptSalt);
@@ -83,7 +83,7 @@ export const Login = async (req, res) => {
   const { username, password } = req.body;
   let [err, ret] = verify_user_data(username, password);
   if (err) {
-    return res.send(ret);
+    return res.status(500).send(ret);
   }
   try {
     const UserDoc = await UserModel.findOne({ username });
