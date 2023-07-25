@@ -1,9 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
-import { UserContext } from "../UserContext";
+import { UserContext } from "../../contexts/UserContext";
 import AuthForm from "./AuthForm";
 import { useContext } from "react";
 import { io } from "socket.io-client";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 export default function RegisterOrLogin() {
   const [username, setUsername] = useState("");
@@ -23,11 +27,38 @@ export default function RegisterOrLogin() {
       })
       .then((resp) => {
         if (resp.status === 201) {
-          setIsLogin(true);
+          MySwal.fire({
+            icon: "success",
+            title: "Register successfully",
+            text: "Login quickly!",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            setIsLogin(true);
+          });
         } else if (resp.status === 200) {
-          setLoginedUsername(username);
-          setSocket(io(import.meta.env.VITE_SOCKETIO_URL));
-          setId(resp.data.id);
+          MySwal.fire({
+            icon: "success",
+            title: "Login successfully",
+            text: "Chat with your friends!",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            setLoginedUsername(username);
+            setSocket(io(import.meta.env.VITE_SOCKETIO_URL));
+            setId(resp.data.id);
+          });
+        }
+      })
+      .catch((resp) => {
+        if (resp.response.status === 500) {
+          console.log("aaa");
+          MySwal.fire({
+            icon: "error",
+            title: "Seems to have gone wrong",
+            text: resp.response.data,
+            showConfirmButton: true,
+          });
         }
       });
   }

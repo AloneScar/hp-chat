@@ -1,6 +1,6 @@
 import axios from "axios";
 import Pages from "./components/Pages";
-import { UserContextProvider } from "./UserContext";
+import { UserContextProvider } from "./contexts/UserContext";
 
 function App() {
   axios.defaults.baseURL = import.meta.env.VITE_AXIOS_BASEURL;

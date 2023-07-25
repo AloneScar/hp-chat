@@ -75,7 +75,7 @@ export const Register = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(500).send("server error");
+    res.status(500).send("This account has already been registered");
   }
 };
 
