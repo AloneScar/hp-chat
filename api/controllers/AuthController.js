@@ -39,7 +39,8 @@ export const Authenticate = (req, res) => {
           username: userData.username,
         });
         if (UserDoc) {
-          res.status(200).json(userData);
+          console.log(UserDoc);
+          res.status(200).json({ ...userData, qq: UserDoc.qq });
         } else {
           res.status(500).send("token lapsed");
         }
@@ -98,7 +99,7 @@ export const Login = async (req, res) => {
             res
               .cookie("token", token, { sameSite: "none", secure: true })
               .status(200)
-              .json({ id: UserDoc._id });
+              .json({ id: UserDoc._id, qq: UserDoc.qq });
           },
         );
       } else {

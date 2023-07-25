@@ -4,10 +4,7 @@ import { useContext, useState } from "react";
 import ScrollIntoView from "react-scroll-into-view";
 import { UserContext } from "../../contexts/UserContext";
 
-export default function MessageNewForm({
-  scrollEndBtn,
-  update_local_messages,
-}) {
+export default function MessageNewForm({ scrollEndBtn, scroll_end }) {
   const { username, socket } = useContext(UserContext);
   const [inputMessage, setInputMessage] = useState("");
   const send_message = () => {
@@ -18,7 +15,6 @@ export default function MessageNewForm({
         send_time: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
       };
       socket.emit("send_message", msg);
-      update_local_messages(msg);
     }
     setInputMessage("");
   };
@@ -34,6 +30,7 @@ export default function MessageNewForm({
             send_message();
           }
         }}
+        onClick={() => scroll_end()}
       ></input>
       <button
         className="h-full bg-[#4E9F3D] dark:bg-[#3C415C] text-white px-2 text-center"

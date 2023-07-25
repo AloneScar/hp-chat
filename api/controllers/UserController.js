@@ -1,3 +1,3 @@
-export const helloworld = (req, res) => {
-  res.send("helloworld");
+export const postQQNum = (req, res) => {
+  res.send("sssdf");
 };

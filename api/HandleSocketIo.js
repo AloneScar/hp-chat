@@ -10,7 +10,7 @@ export default function handleSocketIo(io) {
     socket.on("send_message", async (msg) => {
       try {
         const msgDoc = await MessageModel.create(msg);
-        socket.broadcast.emit("receive_message", msgDoc);
+        socket.emit("receive_message", msgDoc);
       } catch (err) {
         console.log(err);
       }

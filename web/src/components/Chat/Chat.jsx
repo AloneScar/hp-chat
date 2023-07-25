@@ -1,16 +1,20 @@
-import { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import Navbar from "./Navbar";
 import Messages from "./Messages";
+import RoomList from "./RoomList";
 import MessageNewForm from "./MessageNewForm";
 import { UserContext } from "../../contexts/UserContext";
-import RoomList from "./RoomList";
+import { useState, useEffect, useContext, useRef } from "react";
 
 export default function Chat() {
   const { socket } = useContext(UserContext);
   const [messages, setMessages] = useState([]);
   const scrollEndBtn = useRef();
   const [isHidden, setIsHidden] = useState(false);
+  const scroll_end = () => {
+    const btn = scrollEndBtn.current;
+    btn.click();
+  };
   const update_local_messages = (msg) => {
     setMessages((oldMsgs) => {
       if (oldMsgs.length !== 0) {
@@ -38,8 +42,7 @@ export default function Chat() {
     });
   }, [socket]);
   useEffect(() => {
-    const btn = scrollEndBtn.current;
-    btn.click();
+    scroll_end();
   }, [messages]);
   useEffect(() => {
     axios.get("/chat").then((resp) => {
@@ -59,6 +62,7 @@ export default function Chat() {
         <MessageNewForm
           scrollEndBtn={scrollEndBtn}
           update_local_messages={update_local_messages}
+          scroll_end={scroll_end}
         />
       </div>
     </>
