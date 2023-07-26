@@ -3,13 +3,13 @@ import {
   UsersIcon,
   SunIcon,
   MoonIcon,
-  UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import axios from "axios";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import Avatar from "./Avatar";
 
 const MySwal = withReactContent(Swal);
 
@@ -25,7 +25,6 @@ export default function Navbar({ setIsHidden }) {
     qq,
     setQQ,
   } = useContext(UserContext);
-  console.log(qq);
   const handle_logout = () => {
     MySwal.fire({
       title: "Are you sure want to logout?",
@@ -70,10 +69,23 @@ export default function Navbar({ setIsHidden }) {
     if (formValues) {
       const newQQ = formValues[0];
       const newUsername = formValues[1];
-      if (newQQ !== "" && newQQ !== qq) {
-        axios.get("https://q.qlogo.cn/g?b=qq&nk=111111&s=100").then((resp) => {
-          console.log(resp);
+      if (newQQ.trim() !== "" && newQQ !== qq) {
+        axios.get(`/user/qq/${newQQ}`).then((resp) => {
+          if (resp.status === 201) {
+            setQQ(resp.data);
+          }
         });
+      }
+      if (newUsername.trim() !== "" && newUsername !== username) {
+        axios
+          .post(`/user/username`, {
+            username: newUsername,
+          })
+          .then((resp) => {
+            if (resp.status === 201) {
+              setUsername(resp.data);
+            }
+          });
       }
     }
   };
@@ -81,7 +93,7 @@ export default function Navbar({ setIsHidden }) {
     <div className="flex flex-row my-1 mx-2 bg-[#4C4B16] dark:bg-[#9DB2BF] p-1 justify-between items-center">
       <div className="flex flex-row gap-2">
         <button onClick={() => setIsHidden(true)}>
-          <UsersIcon className="w-6 h-6" />
+          <UsersIcon className="w-7 h-7" />
         </button>
         <button
           onClick={() => {
@@ -89,8 +101,8 @@ export default function Navbar({ setIsHidden }) {
             setIsDark(!isDark);
           }}
         >
-          {!isDark && <SunIcon className="w-6 h-6" />}
-          {isDark && <MoonIcon className="w-6 h-6" />}
+          {!isDark && <SunIcon className="w-7 h-7" />}
+          {isDark && <MoonIcon className="w-7 h-7" />}
         </button>
       </div>
       <div className="flex gap-2">
@@ -98,11 +110,11 @@ export default function Navbar({ setIsHidden }) {
           className="flex justify-center items-center"
           onClick={() => handle_change_user_info()}
         >
-          <span>{username}</span>
-          <UserCircleIcon className="w-6 h-6 ml-1" />
+          <span className="mr-2 text-lg">{username}</span>
+          <Avatar />
         </button>
         <button className="mr-1" onClick={() => handle_logout()}>
-          <ArrowLeftOnRectangleIcon className="w-6 h-6" />
+          <ArrowLeftOnRectangleIcon className="w-7 h-7" />
         </button>
       </div>
     </div>

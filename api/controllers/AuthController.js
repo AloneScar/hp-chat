@@ -27,31 +27,39 @@ const verify_user_data = (username, password) => {
   return [false, ""];
 };
 
-export const Authenticate = (req, res) => {
-  const token = req.cookies?.token;
+export const verify_token = (token, callback) => {
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) {
-        return res.status(500).send("server error");
+        console.log(err);
+        callback([false, "Server error", 500]);
       }
       try {
         const UserDoc = await UserModel.findOne({
           username: userData.username,
         });
         if (UserDoc) {
-          console.log(UserDoc);
-          res.status(200).json({ ...userData, qq: UserDoc.qq });
+          callback([true, { ...userData, qq: UserDoc.qq }, 200]);
         } else {
-          res.status(500).send("token lapsed");
+          callback([false, "token lapsed", 500]);
         }
       } catch (err) {
         console.log(err);
-        res.status(500).send("server error");
+        callback([false, "Server error", 500]);
       }
     });
   } else {
-    res.status(401).send("no token");
+    callback([false, "no toekn", 401]);
   }
+};
+
+export const Authenticate = (req, res) => {
+  verify_token(req.cookies?.token, ([isUser, ret, statusCode]) => {
+    if (isUser) {
+      return res.status(statusCode).json(ret);
+    }
+    res.status(statusCode).send(ret);
+  });
 };
 
 export const Register = async (req, res) => {
@@ -110,7 +118,7 @@ export const Login = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    res.status(500).send("server error");
+    res.status(500).send("Server error");
   }
 };
 

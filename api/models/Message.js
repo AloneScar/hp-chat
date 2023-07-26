@@ -1,10 +1,18 @@
 import mongoose from "mongoose";
 
-const MessageSchema = new mongoose.Schema({
-  sender: String,
+const PrivateMsgSchema = new mongoose.Schema({
+  sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  recipient: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   contents: String,
   send_time: String,
 });
 
-const MessageModel = mongoose.model("Message", MessageSchema);
-export default MessageModel;
+const RoomMsgSchema = new mongoose.Schema({
+  sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  room: { type: mongoose.Schema.Types.ObjectId, ref: "Room" },
+  contents: String,
+  send_time: String,
+});
+
+export const PrivateMsgModel = mongoose.model("PrivateMsg", PrivateMsgSchema);
+export const RoomMsgModel = mongoose.model("RoomMsg", RoomMsgSchema);

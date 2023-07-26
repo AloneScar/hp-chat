@@ -1,4 +1,12 @@
-export default function RoomList({ isHidden, setIshidden }) {
+import axios from "axios";
+import { useEffect } from "react";
+
+export default function ContactList({ isHidden, setIshidden }) {
+  useEffect(() => {
+    axios.get("/chat/contacts").then((resp) => {
+      console.log(resp);
+    });
+  }, [isHidden]);
   if (isHidden)
     return (
       <div

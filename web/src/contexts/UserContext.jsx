@@ -21,7 +21,6 @@ export function UserContextProvider({ children }) {
   useEffect(() => {
     axios.get("/auth").then((resp) => {
       if (resp.status === 200) {
-        console.log(resp.data);
         setQQ(resp.data.qq);
         setId(resp.data.id);
         setUsername(resp.data.username);
